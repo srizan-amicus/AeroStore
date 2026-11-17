@@ -1,4 +1,5 @@
 import { BlurView } from "expo-blur";
+import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -10,10 +11,11 @@ const COLORS = {
 };
 
 export default function WelcomeScreen() {
-  const handleGetStarted = () => {
-    console.log("AeroStore: Get Started button pressed!");
-  };
+  const router = useRouter();
 
+  const handleGetStarted = () => {
+    router.push("/discover");
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -30,7 +32,7 @@ export default function WelcomeScreen() {
 
             <Text style={styles.title}>
               Welcome to{"\n"}
-              <Text style={styles.titleHighlight}>React Native.</Text>
+              <Text style={styles.titleHighlight}>AeroStore</Text>
             </Text>
 
             <Text style={styles.description}>
@@ -110,6 +112,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2.5,
     color: COLORS.forest,
     marginBottom: 24,
+    textAlign: "center",
   },
 
   title: {
@@ -118,6 +121,7 @@ const styles = StyleSheet.create({
     lineHeight: 46,
     color: COLORS.forest,
     letterSpacing: -1.5,
+    textAlign: "center",
   },
 
   titleHighlight: {
@@ -131,6 +135,7 @@ const styles = StyleSheet.create({
     marginTop: 20,
     marginBottom: 32,
     opacity: 0.8,
+    textAlign: "center",
   },
 
   button: {

@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   },
 
   star: {
-    color: "#B98500",
+    color: "#d89d06",
     fontSize: 15,
   },
 

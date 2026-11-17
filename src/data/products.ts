@@ -33,4 +33,20 @@ export const products: Product[] = [
     rating: 4.5,
     image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
   },
+  {
+    id: "5",
+    title: "Classic Sunglasses",
+    category: "Accessories",
+    price: 1599,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
+  },
+  {
+    id: "6",
+    title: "Leather Handbag",
+    category: "Fashion",
+    price: 3299,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600",
+  },
 ];
