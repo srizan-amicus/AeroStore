@@ -1,6 +1,7 @@
 import type { Product } from "@/types/product";
 
 export const products: Product[] = [
+  // Electronics
   {
     id: "1",
     title: "Studio Headphones",
@@ -10,28 +11,46 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600",
   },
   {
+    id: "7",
+    title: "Wireless Earbuds",
+    category: "Electronics",
+    price: 2299,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1606220945770-b5b6c2c55bf1?w=600",
+  },
+  {
+    id: "8",
+    title: "Smart Speaker",
+    category: "Electronics",
+    price: 4199,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1589003077984-894e133dabab?w=600",
+  },
+  {
+    id: "9",
+    title: "Digital Camera",
+    category: "Electronics",
+    price: 24999,
+    rating: 4.9,
+    image: "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=600",
+  },
+  {
+    id: "10",
+    title: "Mechanical Keyboard",
+    category: "Electronics",
+    price: 5499,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?w=600",
+  },
+
+  // Accessories
+  {
     id: "2",
     title: "Wristwatch",
     category: "Accessories",
     price: 2799,
     rating: 4.6,
     image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600",
-  },
-  {
-    id: "3",
-    title: "Everyday Sneakers",
-    category: "Footwear",
-    price: 2499,
-    rating: 4.7,
-    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
-  },
-  {
-    id: "4",
-    title: "Urban Backpack",
-    category: "Lifestyle",
-    price: 1899,
-    rating: 4.5,
-    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
   },
   {
     id: "5",
@@ -42,11 +61,147 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=600",
   },
   {
+    id: "11",
+    title: "Leather Wallet",
+    category: "Accessories",
+    price: 1299,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1627123424574-724758594e93?w=600",
+  },
+  {
+    id: "12",
+    title: "Minimal Bracelet",
+    category: "Accessories",
+    price: 899,
+    rating: 4.4,
+    image: "https://images.unsplash.com/photo-1611591437281-460bfbe1220a?w=600",
+  },
+
+  // Footwear
+  {
+    id: "3",
+    title: "Everyday Sneakers",
+    category: "Footwear",
+    price: 2499,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=600",
+  },
+  {
+    id: "13",
+    title: "Classic White Sneakers",
+    category: "Footwear",
+    price: 2999,
+    rating: 4.8,
+    image: "https://images.unsplash.com/photo-1495555961986-6d4c1ecb7be3?w=600",
+  },
+  {
+    id: "14",
+    title: "Running Shoes",
+    category: "Footwear",
+    price: 3199,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1460353581641-37baddab0fa2?w=600",
+  },
+  {
+    id: "15",
+    title: "Casual Boots",
+    category: "Footwear",
+    price: 3899,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1608256246200-53e635b5b65f?w=600",
+  },
+
+  // Lifestyle
+  {
+    id: "4",
+    title: "Urban Backpack",
+    category: "Lifestyle",
+    price: 1899,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
+  },
+  {
+    id: "16",
+    title: "Travel Duffel Bag",
+    category: "Lifestyle",
+    price: 2599,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600",
+  },
+  {
+    id: "17",
+    title: "Insulated Water Bottle",
+    category: "Lifestyle",
+    price: 799,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=600",
+  },
+  {
+    id: "18",
+    title: "Desk Organizer",
+    category: "Lifestyle",
+    price: 999,
+    rating: 4.3,
+    image: "https://images.unsplash.com/photo-1494438639946-1ebd1d20bf85?w=600",
+  },
+
+  // Fashion
+  {
     id: "6",
     title: "Leather Handbag",
     category: "Fashion",
     price: 3299,
     rating: 4.8,
     image: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=600",
+  },
+  {
+    id: "19",
+    title: "Classic Denim Jacket",
+    category: "Fashion",
+    price: 2799,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1543076447-215ad9ba6923?w=600",
+  },
+  {
+    id: "20",
+    title: "Cotton T-Shirt",
+    category: "Fashion",
+    price: 899,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=600",
+  },
+  {
+    id: "21",
+    title: "Canvas Tote Bag",
+    category: "Fashion",
+    price: 699,
+    rating: 4.4,
+    image: "https://images.unsplash.com/photo-1544816155-12df9643f363?w=600",
+  },
+
+  // Home & Living
+  {
+    id: "22",
+    title: "Ceramic Coffee Mug",
+    category: "Home & Living",
+    price: 499,
+    rating: 4.7,
+    image: "https://images.unsplash.com/photo-1514228742587-6b1558fcca3d?w=600",
+  },
+  {
+    id: "23",
+    title: "Table Lamp",
+    category: "Home & Living",
+    price: 1799,
+    rating: 4.6,
+    image: "https://images.unsplash.com/photo-1507473885765-e6ed057f782c?w=600",
+  },
+  {
+    id: "24",
+    title: "Decorative Vase",
+    category: "Home & Living",
+    price: 1199,
+    rating: 4.5,
+    image: "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=600",
   },
 ];
