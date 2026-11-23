@@ -1,11 +1,13 @@
 import type { ReactNode } from "react";
 import {
-    StyleSheet,
-    View,
-    type StyleProp,
-    type ViewProps,
-    type ViewStyle,
+  StyleSheet,
+  View,
+  type StyleProp,
+  type ViewProps,
+  type ViewStyle,
 } from "react-native";
+
+import { COLORS } from "@/constants/theme";
 
 type CardVariant = "default" | "outlined" | "elevated";
 type CardPadding = "none" | "small" | "medium" | "large";
@@ -39,6 +41,8 @@ export default function Card({
   );
 }
 
+const cardBackground = COLORS.card ?? COLORS.surface;
+
 const styles = StyleSheet.create({
   base: {
     borderRadius: 18,
@@ -46,17 +50,21 @@ const styles = StyleSheet.create({
   },
 
   default: {
-    backgroundColor: "#EEE2CC",
+    backgroundColor: cardBackground,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
 
   outlined: {
     backgroundColor: "transparent",
     borderWidth: 1,
-    borderColor: "#e2a602",
+    borderColor: COLORS.accent,
   },
 
   elevated: {
-    backgroundColor: "#EEE2CC",
+    backgroundColor: cardBackground,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
     elevation: 4,
     shadowColor: "#000",
     shadowOffset: {

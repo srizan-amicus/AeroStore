@@ -2,11 +2,14 @@ import { useRef, useState } from "react";
 import { Animated, Image, StyleSheet, Text, View } from "react-native";
 
 import { Button, Card } from "@/components/ui";
+import { COLORS } from "@/constants/theme";
 import type { Product } from "@/types/product";
 
 interface ProductCardProps {
   product: Product;
 }
+
+const cardBackground = COLORS.card ?? COLORS.surface;
 
 export default function ProductCard({ product }: ProductCardProps) {
   // --------------------------------------------------
@@ -160,18 +163,22 @@ export default function ProductCard({ product }: ProductCardProps) {
   );
 }
 
+// --------------------------------------------------
 // 6. COMPONENT STYLES
+// --------------------------------------------------
 
 const styles = StyleSheet.create({
   card: {
     flex: 1,
+    backgroundColor: cardBackground,
+    borderColor: COLORS.borderSubtle,
   },
 
   // Product image dimensions and fallback background.
   productImage: {
     width: "100%",
     height: 150,
-    backgroundColor: "rgba(6, 39, 35, 0.08)",
+    backgroundColor: COLORS.borderSubtle,
   },
 
   // Spacing inside the product card.
@@ -184,7 +191,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 14,
     fontWeight: "700",
-    color: "#062723",
+    color: COLORS.textPrimary,
     minHeight: 36,
   },
 
@@ -202,7 +209,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontSize: 13,
     fontWeight: "800",
-    color: "#062723",
+    color: COLORS.textPrimary,
   },
 
   // Initial Add button styling.
@@ -211,6 +218,7 @@ const styles = StyleSheet.create({
     width: 58,
     paddingHorizontal: 4,
     borderRadius: 8,
+    backgroundColor: COLORS.accent,
   },
 
   // Horizontal layout for minus, quantity and plus.
@@ -226,11 +234,13 @@ const styles = StyleSheet.create({
     minHeight: 28,
     paddingHorizontal: 0,
     borderRadius: 7,
+    backgroundColor: COLORS.accent,
   },
 
   // Text styling shared by Add and quantity buttons.
   buttonText: {
     fontSize: 13,
+    color: COLORS.textOnAccent,
   },
 
   // Current quantity display.
@@ -239,9 +249,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 13,
     fontWeight: "700",
-    color: "#062723",
+    color: COLORS.textPrimary,
   },
-  //rating
+
+  // Rating layout.
   titleRatingRow: {
     flexDirection: "row",
     alignItems: "center",
@@ -256,13 +267,13 @@ const styles = StyleSheet.create({
   },
 
   star: {
-    color: "#d89d06",
+    color: COLORS.accent,
     fontSize: 13,
   },
 
   rating: {
     fontSize: 11,
     fontWeight: "600",
-    color: "#062723",
+    color: COLORS.textSecondary,
   },
 });

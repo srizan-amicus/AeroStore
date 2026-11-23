@@ -1,65 +1,36 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://unistyl.es/), etc.
- */
+// export const COLORS = {
+//   background: "#EDE7DC", // Raw Linen
+//   card: "#FBF9F5", // Ivory Silk
+//   surface: "#E1D9CA", // Warm Bisque Surface
+//   accent: "#4A3728", // Espresso Bronze
+//   textPrimary: "#1E1915",
+//   textSecondary: "#6C6157",
+//   textPill: "#39312A",
+//   textOnAccent: "#FBF9F5",
+//   borderSubtle: "rgba(30, 25, 21, 0.14)",
+// };
 
-import '@/global.css';
+// export const COLORS = {
+//   background: "#EDE5D6", // Champagne Sand
+//   card: "#FBF8F0", // Soft Champagne Silk
+//   surface: "#DCCBAE", // Muted Antique Gold
+//   accent: "#55432C", // Deep Bronze
+//   textPrimary: "#403321",
+//   textSecondary: "#8B795E",
+//   textPill: "#665238",
+//   textOnAccent: "#FBF8F0",
+//   borderSubtle: "rgba(85, 67, 44, 0.14)",
+// };
 
-import { Platform } from 'react-native';
-
-export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
-} as const;
-
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
-
-export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
-} as const;
-
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+//dark theme
+export const COLORS = {
+  background: "#0F1215", // Midnight Slate
+  card: "#1D2228", // Elevated Iron Blue-Grey
+  surface: "#15191E", // Dark Harbor Surface
+  accent: "#DCE2E8", // Soft Chalk Silver
+  textPrimary: "#F2F5F8",
+  textSecondary: "#929CA6",
+  textPill: "#C8D0D8",
+  textOnAccent: "#0F1215",
+  borderSubtle: "rgba(220, 226, 232, 0.16)",
+};

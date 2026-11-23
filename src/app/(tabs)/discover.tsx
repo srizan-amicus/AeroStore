@@ -1,4 +1,8 @@
-import { useState } from "react";
+import ProductCard from "@/components/ProductCard";
+import { COLORS } from "@/constants/theme";
+import { products } from "@/data/products";
+import { useLocalSearchParams } from "expo-router";
+import { useEffect, useState } from "react";
 import {
   FlatList,
   Pressable,
@@ -8,9 +12,6 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-
-import ProductCard from "@/components/ProductCard";
-import { products } from "@/data/products";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 // --------------------------------------------------
@@ -28,8 +29,16 @@ export default function HomeScreen() {
   // 2. STATE AND SCREEN DIMENSIONS
   // --------------------------------------------------
 
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const { category } = useLocalSearchParams<{ category?: string }>();
 
+  const [selectedCategory, setSelectedCategory] = useState(
+    categories.includes(category ?? "") ? category! : "All",
+  );
+  useEffect(() => {
+    setSelectedCategory(
+      categories.includes(category ?? "") ? category! : "All",
+    );
+  }, [category]);
   const { width } = useWindowDimensions();
 
   const horizontalPadding = 20;
@@ -134,7 +143,7 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#062723",
+    backgroundColor: COLORS.background,
   },
 
   listContent: {
@@ -148,25 +157,24 @@ const styles = StyleSheet.create({
   },
 
   brand: {
-    fontSize: 18,
+    fontSize: 15,
     fontWeight: "700",
-    letterSpacing: 4,
-    color: "#e2a602",
+    letterSpacing: 5,
+    color: COLORS.accent,
     marginBottom: 18,
     textAlign: "center",
   },
 
   heading: {
     fontSize: 28,
-    fontWeight: "800",
-    color: "#EBEBD8",
+    fontWeight: "700",
+    color: COLORS.textPrimary,
     letterSpacing: -0.5,
   },
 
   subtitle: {
     fontSize: 14,
-    color: "#EBEBD8",
-    opacity: 0.7,
+    color: COLORS.textSecondary,
     marginTop: 8,
   },
 
@@ -181,36 +189,38 @@ const styles = StyleSheet.create({
   categoryButton: {
     paddingHorizontal: 16,
     paddingVertical: 9,
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
-    borderColor: "rgba(238, 226, 204, 0.35)",
-    backgroundColor: "transparent",
+    borderColor: COLORS.borderSubtle,
+    backgroundColor: COLORS.surface,
   },
 
   // Selected category button.
   selectedCategoryButton: {
-    backgroundColor: "#e2a602",
-    borderColor: "#e2a602",
+    backgroundColor: COLORS.accent,
+    borderColor: COLORS.accent,
   },
 
   // Default category text.
   categoryText: {
     fontSize: 12,
     fontWeight: "600",
-    color: "#EBEBD8",
+    color: COLORS.textPill,
+    letterSpacing: 0.3,
   },
 
   // Selected category text.
   selectedCategoryText: {
-    color: "#062723",
+    color: COLORS.textOnAccent,
+    fontWeight: "700",
   },
 
   // Dynamic product count.
   productCount: {
     fontSize: 12,
-    fontWeight: "600",
-    color: "#EBEBD8",
-    opacity: 0.75,
+    fontWeight: "500",
+    color: COLORS.textSecondary,
+    letterSpacing: 0.4,
     marginBottom: 16,
   },
 
@@ -222,7 +232,7 @@ const styles = StyleSheet.create({
 
   // Empty category message.
   emptyMessage: {
-    color: "#EBEBD8",
+    color: COLORS.textSecondary,
     fontSize: 14,
     textAlign: "center",
     marginTop: 30,

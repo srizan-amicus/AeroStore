@@ -1,12 +1,14 @@
 import {
-    Pressable,
-    StyleSheet,
-    Text,
-    type PressableProps,
-    type StyleProp,
-    type TextStyle,
-    type ViewStyle,
+  Pressable,
+  StyleSheet,
+  Text,
+  type PressableProps,
+  type StyleProp,
+  type TextStyle,
+  type ViewStyle,
 } from "react-native";
+
+import { COLORS } from "@/constants/theme";
 
 type ButtonVariant = "primary" | "secondary" | "outline" | "ghost";
 type ButtonSize = "small" | "medium" | "large";
@@ -62,33 +64,35 @@ const styles = StyleSheet.create({
   },
 
   primary: {
-    backgroundColor: "#062723",
+    backgroundColor: COLORS.accent,
   },
   primaryText: {
-    color: "#e2a602",
+    color: COLORS.textOnAccent,
   },
 
   secondary: {
-    backgroundColor: "#e2a602",
+    backgroundColor: COLORS.surface,
+    borderWidth: 1,
+    borderColor: COLORS.borderSubtle,
   },
   secondaryText: {
-    color: "#062723",
+    color: COLORS.textPrimary,
   },
 
   outline: {
     backgroundColor: "transparent",
     borderWidth: 1.5,
-    borderColor: "#062723",
+    borderColor: COLORS.borderSubtle,
   },
   outlineText: {
-    color: "#062723",
+    color: COLORS.textPrimary,
   },
 
   ghost: {
     backgroundColor: "transparent",
   },
   ghostText: {
-    color: "#062723",
+    color: COLORS.textPrimary,
   },
 
   small: {

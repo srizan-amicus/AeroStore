@@ -3,12 +3,7 @@ import { useRouter } from "expo-router";
 import { Pressable, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const COLORS = {
-  forest: "#062723",
-  gold: "#e2a602",
-  translucentGold: "rgba(238, 226, 204, 0.82)",
-  glassBorder: "rgba(255, 255, 255, 0.55)",
-};
+import { COLORS } from "@/constants/theme";
 
 export default function WelcomeScreen() {
   const router = useRouter();
@@ -16,6 +11,7 @@ export default function WelcomeScreen() {
   const handleGetStarted = () => {
     router.push("/discover");
   };
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.content}>
@@ -26,7 +22,7 @@ export default function WelcomeScreen() {
         </View>
 
         {/* Glass content panel */}
-        <BlurView intensity={35} tint="light" style={styles.glassCard}>
+        <BlurView intensity={35} tint="default" style={styles.glassCard}>
           <View style={styles.cardContent}>
             <Text style={styles.eyebrow}>YOUR JOURNEY STARTS HERE</Text>
 
@@ -65,7 +61,7 @@ export default function WelcomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: COLORS.forest,
+    backgroundColor: COLORS.background,
   },
 
   content: {
@@ -84,21 +80,22 @@ const styles = StyleSheet.create({
     fontSize: 13,
     fontWeight: "700",
     letterSpacing: 5,
-    color: COLORS.translucentGold,
+    color: COLORS.textSecondary,
   },
 
   brandLine: {
     width: 32,
     height: 2,
-    backgroundColor: COLORS.gold,
+    backgroundColor: COLORS.accent,
     borderRadius: 2,
   },
+
   glassCard: {
     borderRadius: 28,
     overflow: "hidden",
     borderWidth: 1,
-    borderColor: COLORS.glassBorder,
-    backgroundColor: COLORS.translucentGold,
+    borderColor: COLORS.borderSubtle,
+    backgroundColor: COLORS.surface,
   },
 
   cardContent: {
@@ -110,7 +107,7 @@ const styles = StyleSheet.create({
     fontSize: 10,
     fontWeight: "700",
     letterSpacing: 2.5,
-    color: COLORS.forest,
+    color: COLORS.textSecondary,
     marginBottom: 24,
     textAlign: "center",
   },
@@ -119,27 +116,26 @@ const styles = StyleSheet.create({
     fontSize: 38,
     fontWeight: "800",
     lineHeight: 46,
-    color: COLORS.forest,
+    color: COLORS.textPrimary,
     letterSpacing: -1.5,
     textAlign: "center",
   },
 
   titleHighlight: {
-    color: COLORS.forest,
+    color: COLORS.accent,
   },
 
   description: {
     fontSize: 16,
     lineHeight: 26,
-    color: COLORS.forest,
+    color: COLORS.textSecondary,
     marginTop: 20,
     marginBottom: 32,
-    opacity: 0.8,
     textAlign: "center",
   },
 
   button: {
-    backgroundColor: COLORS.forest,
+    backgroundColor: COLORS.accent,
     borderRadius: 16,
     minHeight: 58,
     paddingHorizontal: 22,
@@ -155,13 +151,13 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    color: COLORS.gold,
+    color: COLORS.textOnAccent,
     fontSize: 16,
     fontWeight: "700",
   },
 
   buttonArrow: {
-    color: COLORS.gold,
+    color: COLORS.textOnAccent,
     fontSize: 20,
   },
 
@@ -170,7 +166,6 @@ const styles = StyleSheet.create({
     fontSize: 9,
     fontWeight: "600",
     letterSpacing: 3,
-    color: COLORS.translucentGold,
-    opacity: 0.85,
+    color: COLORS.textSecondary,
   },
 });
