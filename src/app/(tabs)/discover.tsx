@@ -14,9 +14,7 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// --------------------------------------------------
 // 1. CATEGORY DATA
-// --------------------------------------------------
 
 // Generate unique categories dynamically from product data.
 const categories = [
@@ -25,9 +23,7 @@ const categories = [
 ];
 
 export default function HomeScreen() {
-  // --------------------------------------------------
   // 2. STATE AND SCREEN DIMENSIONS
-  // --------------------------------------------------
 
   const { category } = useLocalSearchParams<{ category?: string }>();
 
@@ -46,9 +42,7 @@ export default function HomeScreen() {
 
   const cardWidth = (width - horizontalPadding * 2 - columnGap) / 2;
 
-  // --------------------------------------------------
   // 3. FILTER PRODUCTS
-  // --------------------------------------------------
 
   // Show all products or only products belonging to the selected category.
   const filteredProducts =
@@ -56,9 +50,7 @@ export default function HomeScreen() {
       ? products
       : products.filter((product) => product.category === selectedCategory);
 
-  // --------------------------------------------------
   // 4. PRODUCT LIST SCREEN
-  // --------------------------------------------------
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -136,9 +128,7 @@ export default function HomeScreen() {
   );
 }
 
-// --------------------------------------------------
 // 5. SCREEN STYLES
-// --------------------------------------------------
 
 const styles = StyleSheet.create({
   container: {
