@@ -1,21 +1,25 @@
 import { useRouter } from "expo-router";
 import {
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
-    useWindowDimensions,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+  useWindowDimensions,
 } from "react-native";
 
 import ProductCard from "@/components/ProductCard";
 import { COLORS } from "@/constants/theme";
-import { products } from "@/data/products";
+import type { Product } from "@/types/product";
 
-const featuredProducts = products.slice(0, 4);
+interface FeaturedProductsProps {
+  products: Product[];
+}
 
-export default function FeaturedProducts() {
+export default function FeaturedProducts({ products }: FeaturedProductsProps) {
   const router = useRouter();
   const { width } = useWindowDimensions();
+
+  const featuredProducts = products.slice(0, 4);
 
   const horizontalPadding = 20;
   const columnGap = 14;
@@ -24,11 +28,9 @@ export default function FeaturedProducts() {
 
   return (
     <View style={styles.container}>
-      {/* Section heading */}
       <View style={styles.headingContainer}>
         <View>
           <Text style={styles.heading}>Curated For You</Text>
-
           <Text style={styles.subtitle}>A selection worth discovering.</Text>
         </View>
 
@@ -40,7 +42,6 @@ export default function FeaturedProducts() {
         </Pressable>
       </View>
 
-      {/* Two-column product grid */}
       <View style={styles.productGrid}>
         {featuredProducts.map((product) => (
           <View

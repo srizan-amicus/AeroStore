@@ -10,7 +10,7 @@ import {
 import { COLORS } from "@/constants/theme";
 
 const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1774682060992-46c7e9f2e50b?q=80&w=870&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D";
+  "https://plus.unsplash.com/premium_photo-1683288706157-9913483dffc8?w=700&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=NHwxMjA3fDA%3D";
 
 export default function HeroBanner() {
   const router = useRouter();

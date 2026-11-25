@@ -1,40 +1,34 @@
 import { useRouter } from "expo-router";
 import {
-    Image,
-    Pressable,
-    ScrollView,
-    StyleSheet,
-    Text,
-    View,
+  Image,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 
 import { COLORS } from "@/constants/theme";
-import { products } from "@/data/products";
+
+interface CategorySectionProps {
+  categories: string[];
+}
 
 const categoryImages: Record<string, string> = {
-  Electronics:
+  electronics:
     "https://images.unsplash.com/photo-1498049794561-7780e7231661?w=500&q=85",
-
-  Accessories:
-    "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=500&q=85",
-
-  Footwear:
-    "https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=500&q=85",
-
-  Lifestyle:
-    "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=500&q=85",
-
-  Fashion:
+  jewelery:
+    "https://images.unsplash.com/photo-1611652022419-a9419f74343d?w=500&q=85",
+  "men's clothing":
+    "https://images.unsplash.com/photo-1516257984-b1b4d707412e?w=500&q=85",
+  "women's clothing":
     "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=500&q=85",
-
-  "Home & Living":
-    "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?w=500&q=85",
 };
 
-// Generate unique categories dynamically.
-const categories = [...new Set(products.map((product) => product.category))];
+const FALLBACK_IMAGE =
+  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&q=85";
 
-export default function CategorySection() {
+export default function CategorySection({ categories }: CategorySectionProps) {
   const router = useRouter();
 
   const handleCategoryPress = (category: string) => {
@@ -46,14 +40,11 @@ export default function CategorySection() {
 
   return (
     <View style={styles.container}>
-      {/* Centered section heading */}
       <View style={styles.headingContainer}>
         <Text style={styles.heading}>Explore Categories</Text>
-
         <Text style={styles.subtitle}>Find your everyday essentials.</Text>
       </View>
 
-      {/* Horizontal category cards */}
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
@@ -72,9 +63,7 @@ export default function CategorySection() {
           >
             <Image
               source={{
-                uri:
-                  categoryImages[category] ??
-                  "https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=500&q=85",
+                uri: categoryImages[category] ?? FALLBACK_IMAGE,
               }}
               style={styles.categoryImage}
             />
@@ -136,7 +125,7 @@ const styles = StyleSheet.create({
 
   imageOverlay: {
     ...StyleSheet.absoluteFill,
-    backgroundColor: "rgba(20, 18, 16, 0.25)",
+    backgroundColor: "rgba(0, 0, 0, 0.35)",
   },
 
   categoryName: {
@@ -144,11 +133,12 @@ const styles = StyleSheet.create({
     bottom: 12,
     left: 8,
     right: 8,
-    color: COLORS.textPrimary,
+    color: "#FFFFFF",
     fontSize: 12,
     fontWeight: "700",
     letterSpacing: 0.2,
     textAlign: "center",
+    textTransform: "capitalize",
   },
 
   cardPressed: {

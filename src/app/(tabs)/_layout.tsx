@@ -61,7 +61,7 @@ export default function TabLayout() {
           ),
         }}
       />
-
+      {/* 
       <Tabs.Screen
         name="cart"
         options={{
@@ -74,7 +74,7 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
+      /> */}
 
       <Tabs.Screen
         name="profile"

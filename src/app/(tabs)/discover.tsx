@@ -1,11 +1,13 @@
 import ProductCard from "@/components/ProductCard";
 import { COLORS } from "@/constants/theme";
-import { products } from "@/data/products";
+import useProducts from "@/hooks/useProducts";
 import { useLocalSearchParams } from "expo-router";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
+  ActivityIndicator,
   FlatList,
   Pressable,
+  RefreshControl,
   ScrollView,
   StyleSheet,
   Text,
@@ -14,27 +16,14 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-// 1. CATEGORY DATA
+export default function DiscoverScreen() {
+  // API products and request states
+  const { products, isLoading, isRefreshing, error, refresh } = useProducts();
 
-// Generate unique categories dynamically from product data.
-const categories = [
-  "All",
-  ...new Set(products.map((product) => product.category)),
-];
-
-export default function HomeScreen() {
-  // 2. STATE AND SCREEN DIMENSIONS
-
+  // Category received from Home screen navigation
   const { category } = useLocalSearchParams<{ category?: string }>();
 
-  const [selectedCategory, setSelectedCategory] = useState(
-    categories.includes(category ?? "") ? category! : "All",
-  );
-  useEffect(() => {
-    setSelectedCategory(
-      categories.includes(category ?? "") ? category! : "All",
-    );
-  }, [category]);
+  // Screen dimensions
   const { width } = useWindowDimensions();
 
   const horizontalPadding = 20;
@@ -42,15 +31,70 @@ export default function HomeScreen() {
 
   const cardWidth = (width - horizontalPadding * 2 - columnGap) / 2;
 
-  // 3. FILTER PRODUCTS
+  // Generate categories from API products
+  const categories = useMemo(
+    () => ["All", ...new Set(products.map((product) => product.category))],
+    [products],
+  );
 
-  // Show all products or only products belonging to the selected category.
-  const filteredProducts =
-    selectedCategory === "All"
-      ? products
-      : products.filter((product) => product.category === selectedCategory);
+  // Selected category
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  // 4. PRODUCT LIST SCREEN
+  // Sync selected category with navigation params
+  useEffect(() => {
+    const requestedCategory = Array.isArray(category) ? category[0] : category;
+
+    setSelectedCategory(
+      categories.includes(requestedCategory ?? "") ? requestedCategory! : "All",
+    );
+  }, [category, categories]);
+
+  // Filter products based on selected category
+  const filteredProducts = useMemo(
+    () =>
+      selectedCategory === "All"
+        ? products
+        : products.filter((product) => product.category === selectedCategory),
+    [products, selectedCategory],
+  );
+
+  // Retry handler
+  const handleRetry = useCallback(() => {
+    refresh();
+  }, [refresh]);
+
+  // Loading state
+  if (isLoading && products.length === 0) {
+    return (
+      <SafeAreaView style={styles.container} edges={["top"]}>
+        <View style={styles.stateContainer}>
+          <ActivityIndicator size="large" color={COLORS.accent} />
+          <Text style={styles.stateText}>Loading products...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  // Error state
+  if (error && products.length === 0) {
+    return (
+      <SafeAreaView style={styles.container} edges={["top"]}>
+        <View style={styles.stateContainer}>
+          <Text style={styles.errorTitle}>Couldn't load products</Text>
+
+          <Text style={styles.stateText}>{error}</Text>
+
+          <Pressable
+            onPress={handleRetry}
+            style={styles.retryButton}
+            accessibilityRole="button"
+          >
+            <Text style={styles.retryButtonText}>Try Again</Text>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView style={styles.container} edges={["top"]}>
@@ -58,34 +102,40 @@ export default function HomeScreen() {
         data={filteredProducts}
         keyExtractor={(item) => item.id}
         numColumns={2}
-        key={2}
         columnWrapperStyle={styles.columnWrapper}
         contentContainerStyle={styles.listContent}
+        refreshControl={
+          <RefreshControl
+            refreshing={isRefreshing}
+            onRefresh={refresh}
+            tintColor={COLORS.accent}
+            colors={[COLORS.accent]}
+            progressBackgroundColor={COLORS.card}
+          />
+        }
         ListHeaderComponent={
           <View style={styles.header}>
-            {/* Brand Name */}
             <Text style={styles.brand}>AEROSTORE</Text>
 
-            {/* Screen Heading */}
             <Text style={styles.heading}>Discover Products</Text>
 
             <Text style={styles.subtitle}>
               Browse from a range of products.
             </Text>
 
-            {/* Category Filters */}
+            {/* Category filters */}
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
               contentContainerStyle={styles.categoryList}
             >
-              {categories.map((category) => {
-                const isSelected = selectedCategory === category;
+              {categories.map((itemCategory) => {
+                const isSelected = selectedCategory === itemCategory;
 
                 return (
                   <Pressable
-                    key={category}
-                    onPress={() => setSelectedCategory(category)}
+                    key={itemCategory}
+                    onPress={() => setSelectedCategory(itemCategory)}
                     style={[
                       styles.categoryButton,
                       isSelected && styles.selectedCategoryButton,
@@ -99,18 +149,24 @@ export default function HomeScreen() {
                         isSelected && styles.selectedCategoryText,
                       ]}
                     >
-                      {category}
+                      {itemCategory}
                     </Text>
                   </Pressable>
                 );
               })}
             </ScrollView>
 
-            {/* Dynamic Product Count */}
+            {/* Product count */}
             <Text style={styles.productCount}>
               Showing {filteredProducts.length}{" "}
               {filteredProducts.length === 1 ? "product" : "products"}
             </Text>
+
+            {error && (
+              <Text style={styles.refreshError}>
+                Refresh failed. Showing previously loaded products.
+              </Text>
+            )}
           </View>
         }
         renderItem={({ item }) => (
@@ -128,8 +184,6 @@ export default function HomeScreen() {
   );
 }
 
-// 5. SCREEN STYLES
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -140,6 +194,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: 24,
     paddingBottom: 32,
+    flexGrow: 1,
   },
 
   header: {
@@ -168,14 +223,12 @@ const styles = StyleSheet.create({
     marginTop: 8,
   },
 
-  // Horizontal category filter layout.
   categoryList: {
     flexDirection: "row",
     gap: 10,
     paddingVertical: 18,
   },
 
-  // Default category button.
   categoryButton: {
     paddingHorizontal: 16,
     paddingVertical: 9,
@@ -185,27 +238,24 @@ const styles = StyleSheet.create({
     backgroundColor: COLORS.surface,
   },
 
-  // Selected category button.
   selectedCategoryButton: {
     backgroundColor: COLORS.accent,
     borderColor: COLORS.accent,
   },
 
-  // Default category text.
   categoryText: {
     fontSize: 12,
     fontWeight: "600",
     color: COLORS.textPill,
     letterSpacing: 0.3,
+    textTransform: "capitalize",
   },
 
-  // Selected category text.
   selectedCategoryText: {
     color: COLORS.textOnAccent,
     fontWeight: "700",
   },
 
-  // Dynamic product count.
   productCount: {
     fontSize: 12,
     fontWeight: "500",
@@ -214,17 +264,55 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
-  // Product grid layout.
   columnWrapper: {
     justifyContent: "space-between",
     marginBottom: 16,
   },
 
-  // Empty category message.
   emptyMessage: {
     color: COLORS.textSecondary,
     fontSize: 14,
     textAlign: "center",
     marginTop: 30,
+  },
+
+  stateContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    paddingHorizontal: 24,
+    gap: 12,
+  },
+
+  stateText: {
+    color: COLORS.textSecondary,
+    fontSize: 13,
+    textAlign: "center",
+  },
+
+  errorTitle: {
+    color: COLORS.textPrimary,
+    fontSize: 18,
+    fontWeight: "700",
+  },
+
+  retryButton: {
+    backgroundColor: COLORS.accent,
+    paddingHorizontal: 22,
+    paddingVertical: 11,
+    borderRadius: 8,
+    marginTop: 4,
+  },
+
+  retryButtonText: {
+    color: COLORS.textOnAccent,
+    fontSize: 13,
+    fontWeight: "700",
+  },
+
+  refreshError: {
+    color: COLORS.textSecondary,
+    fontSize: 12,
+    marginBottom: 12,
   },
 });
