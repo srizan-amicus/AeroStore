@@ -1,8 +1,13 @@
 import ProductCard from "@/components/ProductCard";
+import SearchBar from "@/components/discover/SearchBar";
+import SortSelector from "@/components/discover/SortSelector";
 import { COLORS } from "@/constants/theme";
+import useProductFilters from "@/hooks/useProductFilters";
 import useProducts from "@/hooks/useProducts";
+
 import { useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect } from "react";
+
 import {
   ActivityIndicator,
   FlatList,
@@ -14,16 +19,14 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
+
 import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function DiscoverScreen() {
-  // API products and request states
   const { products, isLoading, isRefreshing, error, refresh } = useProducts();
 
-  // Category received from Home screen navigation
   const { category } = useLocalSearchParams<{ category?: string }>();
 
-  // Screen dimensions
   const { width } = useWindowDimensions();
 
   const horizontalPadding = 20;
@@ -31,39 +34,33 @@ export default function DiscoverScreen() {
 
   const cardWidth = (width - horizontalPadding * 2 - columnGap) / 2;
 
-  // Generate categories from API products
-  const categories = useMemo(
-    () => ["All", ...new Set(products.map((product) => product.category))],
-    [products],
-  );
+  const {
+    searchQuery,
+    setSearchQuery,
+    selectedCategory,
+    setSelectedCategory,
+    sortOption,
+    setSortOption,
+    categories,
+    filteredProducts,
+    resetFilters,
+  } = useProductFilters(products);
 
-  // Selected category
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  // Sync selected category with navigation params
+  // Sync category received from Home navigation.
   useEffect(() => {
     const requestedCategory = Array.isArray(category) ? category[0] : category;
 
     setSelectedCategory(
-      categories.includes(requestedCategory ?? "") ? requestedCategory! : "All",
+      categories.includes(requestedCategory ?? "")
+        ? (requestedCategory ?? "All")
+        : "All",
     );
-  }, [category, categories]);
+  }, [category, categories, setSelectedCategory]);
 
-  // Filter products based on selected category
-  const filteredProducts = useMemo(
-    () =>
-      selectedCategory === "All"
-        ? products
-        : products.filter((product) => product.category === selectedCategory),
-    [products, selectedCategory],
-  );
-
-  // Retry handler
   const handleRetry = useCallback(() => {
     refresh();
   }, [refresh]);
 
-  // Loading state
   if (isLoading && products.length === 0) {
     return (
       <SafeAreaView style={styles.container} edges={["top"]}>
@@ -75,13 +72,11 @@ export default function DiscoverScreen() {
     );
   }
 
-  // Error state
   if (error && products.length === 0) {
     return (
       <SafeAreaView style={styles.container} edges={["top"]}>
         <View style={styles.stateContainer}>
           <Text style={styles.errorTitle}>Couldn't load products</Text>
-
           <Text style={styles.stateText}>{error}</Text>
 
           <Pressable
@@ -123,6 +118,9 @@ export default function DiscoverScreen() {
               Browse from a range of products.
             </Text>
 
+            {/* Real-time product search */}
+            <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
+
             {/* Category filters */}
             <ScrollView
               horizontal
@@ -156,11 +154,15 @@ export default function DiscoverScreen() {
               })}
             </ScrollView>
 
-            {/* Product count */}
-            <Text style={styles.productCount}>
-              Showing {filteredProducts.length}{" "}
-              {filteredProducts.length === 1 ? "product" : "products"}
-            </Text>
+            {/* Product count and sorting */}
+            <View style={styles.resultsToolbar}>
+              <Text style={styles.productCount}>
+                Showing {filteredProducts.length}{" "}
+                {filteredProducts.length === 1 ? "product" : "products"}
+              </Text>
+
+              <SortSelector value={sortOption} onChange={setSortOption} />
+            </View>
 
             {error && (
               <Text style={styles.refreshError}>
@@ -175,9 +177,27 @@ export default function DiscoverScreen() {
           </View>
         )}
         ListEmptyComponent={
-          <Text style={styles.emptyMessage}>
-            No products found in this category.
-          </Text>
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyTitle}>
+              {searchQuery.trim()
+                ? "No matching products"
+                : "No products found"}
+            </Text>
+
+            <Text style={styles.emptyMessage}>
+              {searchQuery.trim()
+                ? `We couldn't find products matching "${searchQuery.trim()}".`
+                : "Try changing your category or search filters."}
+            </Text>
+
+            <Pressable
+              onPress={resetFilters}
+              style={styles.resetButton}
+              accessibilityRole="button"
+            >
+              <Text style={styles.resetButtonText}>Clear Filters</Text>
+            </Pressable>
+          </View>
         }
       />
     </SafeAreaView>
@@ -199,6 +219,8 @@ const styles = StyleSheet.create({
 
   header: {
     marginBottom: 24,
+    zIndex: 100,
+    elevation: 100,
   },
 
   brand: {
@@ -256,12 +278,21 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
+  resultsToolbar: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: 10,
+    zIndex: 100,
+    elevation: 100,
+  },
+
   productCount: {
+    flex: 1,
     fontSize: 12,
     fontWeight: "500",
     color: COLORS.textSecondary,
     letterSpacing: 0.4,
-    marginBottom: 16,
   },
 
   columnWrapper: {
@@ -269,11 +300,41 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
 
+  emptyContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 20,
+    paddingTop: 30,
+    gap: 10,
+  },
+
+  emptyTitle: {
+    fontSize: 18,
+    fontWeight: "700",
+    color: COLORS.textPrimary,
+    textAlign: "center",
+  },
+
   emptyMessage: {
     color: COLORS.textSecondary,
-    fontSize: 14,
+    fontSize: 13,
     textAlign: "center",
-    marginTop: 30,
+    lineHeight: 20,
+  },
+
+  resetButton: {
+    backgroundColor: COLORS.accent,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    marginTop: 8,
+  },
+
+  resetButtonText: {
+    color: COLORS.textOnAccent,
+    fontSize: 12,
+    fontWeight: "700",
   },
 
   stateContainer: {
@@ -313,6 +374,6 @@ const styles = StyleSheet.create({
   refreshError: {
     color: COLORS.textSecondary,
     fontSize: 12,
-    marginBottom: 12,
+    marginTop: 12,
   },
 });
