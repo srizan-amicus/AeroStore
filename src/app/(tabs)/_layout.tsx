@@ -61,7 +61,7 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* 
+
       <Tabs.Screen
         name="cart"
         options={{
@@ -69,20 +69,6 @@ export default function TabLayout() {
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
               name={focused ? "bag" : "bag-outline"}
-              size={focused ? 22 : size}
-              color={String(color)}
-            />
-          ),
-        }}
-      /> */}
-
-      <Tabs.Screen
-        name="profile"
-        options={{
-          title: "Profile",
-          tabBarIcon: ({ color, size, focused }) => (
-            <Ionicons
-              name={focused ? "person" : "person-outline"}
               size={focused ? 22 : size}
               color={String(color)}
             />

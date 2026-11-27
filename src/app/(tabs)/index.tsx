@@ -1,7 +1,6 @@
 import { useMemo } from "react";
 import {
   ActivityIndicator,
-  Pressable,
   RefreshControl,
   ScrollView,
   StyleSheet,
@@ -13,7 +12,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import CategorySection from "@/components/home/CategorySection";
 import FeaturedProducts from "@/components/home/FeaturedProducts";
 import HeroBanner from "@/components/home/HeroBanner";
+import HomeFooter from "@/components/home/HomeFooter";
 import HomeHeader from "@/components/home/HomeHeader";
+import { ErrorState } from "@/components/ui";
 import { COLORS } from "@/constants/theme";
 import useProducts from "@/hooks/useProducts";
 
@@ -48,19 +49,11 @@ export default function HomeScreen() {
             <Text style={styles.stateText}>Loading products...</Text>
           </View>
         ) : error && products.length === 0 ? (
-          <View style={styles.stateContainer}>
-            <Text style={styles.errorTitle}>Couldn't load products</Text>
-
-            <Text style={styles.stateText}>{error}</Text>
-
-            <Pressable
-              onPress={refresh}
-              style={styles.retryButton}
-              accessibilityRole="button"
-            >
-              <Text style={styles.retryButtonText}>Try Again</Text>
-            </Pressable>
-          </View>
+          <ErrorState
+            title="Couldn't load products"
+            message={error}
+            onRetry={refresh}
+          />
         ) : products.length === 0 ? (
           <View style={styles.stateContainer}>
             <Text style={styles.stateText}>
@@ -77,6 +70,7 @@ export default function HomeScreen() {
 
             <CategorySection categories={categories} />
             <FeaturedProducts products={products} />
+            <HomeFooter />
           </>
         )}
       </ScrollView>
@@ -102,26 +96,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
     color: COLORS.textSecondary,
     textAlign: "center",
-  },
-
-  errorTitle: {
-    fontSize: 18,
-    fontWeight: "700",
-    color: COLORS.textPrimary,
-  },
-
-  retryButton: {
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 22,
-    paddingVertical: 11,
-    borderRadius: 8,
-    marginTop: 4,
-  },
-
-  retryButtonText: {
-    color: COLORS.textOnAccent,
-    fontSize: 13,
-    fontWeight: "700",
   },
 
   refreshError: {

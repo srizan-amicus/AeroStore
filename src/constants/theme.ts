@@ -2,7 +2,7 @@ export const COLORS = {
   background: "#F1E9DE", // Natural Sand
   card: "#FFFAF3", // Warm Porcelain
   surface: "#E6D8C8", // Desert Beige
-  accent: "#A65F46", // Burnt Terracotta
+  accent: "#e60b3a", // Burnt Terracotta
   textPrimary: "#29221E",
   textSecondary: "#8C796B",
   textPill: "#755345",

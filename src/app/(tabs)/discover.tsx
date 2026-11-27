@@ -1,12 +1,13 @@
 import ProductCard from "@/components/ProductCard";
 import SearchBar from "@/components/discover/SearchBar";
 import SortSelector from "@/components/discover/SortSelector";
+import { ErrorState } from "@/components/ui";
 import { COLORS } from "@/constants/theme";
 import useProductFilters from "@/hooks/useProductFilters";
 import useProducts from "@/hooks/useProducts";
 
 import { useLocalSearchParams } from "expo-router";
-import { useCallback, useEffect } from "react";
+import { useEffect } from "react";
 
 import {
   ActivityIndicator,
@@ -57,10 +58,6 @@ export default function DiscoverScreen() {
     );
   }, [category, categories, setSelectedCategory]);
 
-  const handleRetry = useCallback(() => {
-    refresh();
-  }, [refresh]);
-
   if (isLoading && products.length === 0) {
     return (
       <SafeAreaView style={styles.container} edges={["top"]}>
@@ -75,18 +72,11 @@ export default function DiscoverScreen() {
   if (error && products.length === 0) {
     return (
       <SafeAreaView style={styles.container} edges={["top"]}>
-        <View style={styles.stateContainer}>
-          <Text style={styles.errorTitle}>Couldn't load products</Text>
-          <Text style={styles.stateText}>{error}</Text>
-
-          <Pressable
-            onPress={handleRetry}
-            style={styles.retryButton}
-            accessibilityRole="button"
-          >
-            <Text style={styles.retryButtonText}>Try Again</Text>
-          </Pressable>
-        </View>
+        <ErrorState
+          title="Couldn't load products"
+          message={error}
+          onRetry={refresh}
+        />
       </SafeAreaView>
     );
   }
@@ -118,10 +108,8 @@ export default function DiscoverScreen() {
               Browse from a range of products.
             </Text>
 
-            {/* Real-time product search */}
             <SearchBar value={searchQuery} onChangeText={setSearchQuery} />
 
-            {/* Category filters */}
             <ScrollView
               horizontal
               showsHorizontalScrollIndicator={false}
@@ -154,7 +142,6 @@ export default function DiscoverScreen() {
               })}
             </ScrollView>
 
-            {/* Product count and sorting */}
             <View style={styles.resultsToolbar}>
               <Text style={styles.productCount}>
                 Showing {filteredProducts.length}{" "}
@@ -349,26 +336,6 @@ const styles = StyleSheet.create({
     color: COLORS.textSecondary,
     fontSize: 13,
     textAlign: "center",
-  },
-
-  errorTitle: {
-    color: COLORS.textPrimary,
-    fontSize: 18,
-    fontWeight: "700",
-  },
-
-  retryButton: {
-    backgroundColor: COLORS.accent,
-    paddingHorizontal: 22,
-    paddingVertical: 11,
-    borderRadius: 8,
-    marginTop: 4,
-  },
-
-  retryButtonText: {
-    color: COLORS.textOnAccent,
-    fontSize: 13,
-    fontWeight: "700",
   },
 
   refreshError: {
